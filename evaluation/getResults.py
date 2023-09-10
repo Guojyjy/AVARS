@@ -104,29 +104,25 @@ def get_main_metric(tripinfo_files, path, speed_limit):
     print('Average vehicle trip length (m): ', avg_all_trip_length / avg_finished_trip_num)
     fuel = np.mean(fuel) / (avg_all_trip_length / 100)  # ml/m -> l/100km
     CO2 = np.mean(CO2) / avg_all_trip_length  # mg/m -> g/km
-    delay = (np.mean(duration) - avg_all_trip_length / speed_limit) / avg_finished_trip_num
     duration = np.mean(duration) / avg_finished_trip_num
 
-    return fuel, CO2, duration, delay, tt_veh
+    return fuel, CO2, duration, tt_veh
 
 
 def have_df_metric(scen_file_dict, path_dir, speed_limit, scenarios_legend):
     avg_fuel = []
     avg_CO2 = []
     avg_dura = []
-    avg_delay = []
-    avg_ttc = []
 
     travelt_all = []
     traveltime_df = pd.DataFrame()
     scen_tag = []
     for scenario in scen_file_dict.keys():
-        fuel, CO2, duration, delay, travelt = get_main_metric(scen_file_dict[scenario]['-tripinfo.xml'],
+        fuel, CO2, duration, travelt = get_main_metric(scen_file_dict[scenario]['-tripinfo.xml'],
                                                               path_dir + '/' + scenario, speed_limit)
         avg_fuel.append(fuel)
         avg_CO2.append(CO2)
         avg_dura.append(duration)
-        avg_delay.append(delay)
 
         traveltime_avg_each_vehicle = []
         for tt_list in travelt.values():
@@ -145,7 +141,7 @@ def have_df_metric(scen_file_dict, path_dir, speed_limit, scenarios_legend):
 
     dataframe = pd.DataFrame(
         {'Scenario': scen_file_dict.keys(), 'Fuel consumption l/100km': avg_fuel, 'CO2 emission g/1km': avg_CO2,
-         'Average travel time': avg_dura, 'Delay': avg_delay})
+         'Average travel time': avg_dura})
     print()
     print("Main traffic statistics:")
     print(dataframe)
@@ -179,7 +175,7 @@ def parse_args(args):
         help='Speed limit.')
 
     parser.add_argument(
-        '--avg_num', type=int, default=8,
+        '--avg_num', type=int, default=18,
         help='How many scenarios to get the average result.')
 
     parser.add_argument(
@@ -202,7 +198,7 @@ def main(args):
         scen_file_dict = {}
         for scenario in scenarios_list:
             scen_file_dict.update({scenario: choose_files(path_dir, scenario, avg_num, recover_bool)})
-        # show the main metric results, CO2 emissions, fuel consumption, travel time, and delay
+        # show the main metric results, CO2 emissions, fuel consumption, and travel time
         have_df_metric(scen_file_dict, path_dir, speed_limit, scenarios_legend)
 
 

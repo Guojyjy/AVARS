@@ -3,7 +3,7 @@
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
-        <net-file value="center10_orig.net.xml"/>
+        <net-file value="center10_closing.net.xml"/>
         <additional-files value="flow_vtypes.add.xml, center10_clip_rand.rou.xml"/>
         <ignore-route-errors value="True"/>
         <random-depart-offset value="10"/>

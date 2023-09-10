@@ -66,7 +66,7 @@ def main_uav():
 	scen_list, scen_legend = UAV()
 
 	interation_num = []
-	avg_reward = [] # include std range
+	avg_reward = []  # include std range
 	tagg = []
 
 	for each in scen_list:
